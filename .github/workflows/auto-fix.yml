@@ -1,0 +1,81 @@
+name: Agent de correction automatique
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  auto-fix:
+    if: github.event.label.name == 'bug-report'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Installer les dependances
+        run: npm ci
+
+      - name: Agent - analyse et correction
+        id: agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: node scripts/agent-fix.js
+
+      - name: Verification - lint
+        run: npm run lint
+
+      - name: Verification - tests
+        run: npm test
+
+      - name: Commit et push du correctif
+        run: |
+          git config user.name "agent-correction-auto"
+          git config user.email "agent@mini-attestation-poc.local"
+          DIAGNOSIS=$(cat agent-diagnosis.txt)
+          rm -f agent-diagnosis.txt
+          git add -A
+          git commit -m "Fix automatique (Issue #${{ github.event.issue.number }}): $DIAGNOSIS"
+          git push origin main
+
+      - name: Commenter et fermer l Issue en cas de succes
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: "Correctif applique automatiquement, tests valides, et deploiement en cours via le pipeline CI/CD. Voir le commit associe pour le detail du correctif."
+            });
+            github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              state: "closed"
+            });
+
+      - name: Commenter en cas d echec
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: "La correction automatique a echoue (le correctif propose n a pas passe les tests ou le lint). Une intervention humaine est necessaire. Voir le detail dans l onglet Actions."
+            });
