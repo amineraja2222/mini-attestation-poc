@@ -53,7 +53,10 @@ CONSIGNES :
 1. Identifie la cause racine du bug decrit dans le signalement, en te basant uniquement sur le code fourni.
 2. Corrige le bug avec le changement le plus minimal et cible possible. Ne modifie que ce qui est necessaire.
 3. Ne change jamais la signature publique des fonctions exportees, sauf si le bug l'exige explicitement.
-4. Reponds UNIQUEMENT avec un objet JSON valide, sans texte avant ni apres, sans balises markdown, au format exact suivant :
+4. Le code doit rester propre pour ESLint (regle eslint:recommended) : ne laisse aucune variable declaree
+   (y compris dans une destructuration comme const { a, b } = obj) qui ne serait plus utilisee apres ton
+   correctif. Si une variable devient inutile, retire-la de la destructuration au lieu de la laisser inutilisee.
+5. Reponds UNIQUEMENT avec un objet JSON valide, sans texte avant ni apres, sans balises markdown, au format exact suivant :
 
 {
   "diagnosis": "explication courte de la cause racine, en francais",
