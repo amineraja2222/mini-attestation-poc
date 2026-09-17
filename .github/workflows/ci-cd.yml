@@ -57,4 +57,4 @@ jobs:
           tags: ghcr.io/${{ github.repository }}:latest,ghcr.io/${{ github.repository }}:${{ github.sha }}
 
       - name: Notifier la fin du deploiement
-        run: echo "Image deployee : ghcr.io/${{ github.repository }}:${{ github.sha }}"
+        run: echo Image deployee
