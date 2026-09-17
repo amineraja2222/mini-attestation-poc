@@ -1,0 +1,19 @@
+{
+  "name": "mini-attestation-poc",
+  "version": "1.0.0",
+  "description": "POC minimal pour valider un pipeline dev+CI/CD automatise par agent IA",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest --coverage",
+    "lint": "eslint src test"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
+}
