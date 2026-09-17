@@ -12,22 +12,15 @@ const { getRateForDate } = require('./rateTable');
  * @param {Object} policy
  * @param {number} policy.basePremium - prime de base avant application du tarif
  * @param {string} policy.originalQuoteDate - date (YYYY-MM-DD) de la souscription initiale
- * @param {number} policy.provisionalCount - combien d'attestations provisoires deja emises
  * @returns {number} montant de la prime a payer, arrondi a 2 decimales
  */
 function calculateProvisionalPremium(policy) {
-  const { basePremium, originalQuoteDate, provisionalCount } = policy;
+  const { basePremium, originalQuoteDate } = policy;
 
-  // BUG (volontairement seme pour la demo) :
-  // a partir de la 2e attestation provisoire, le code utilise la date du jour
-  // au lieu de la date de souscription initiale -> le client peut se voir
-  // appliquer une augmentation tarifaire survenue apres sa souscription.
-  let rateDate = originalQuoteDate;
-  if (provisionalCount > 1) {
-    rateDate = new Date().toISOString().slice(0, 10);
-  }
-
-  const rate = getRateForDate(rateDate);
+  // Le tarif applique doit toujours etre celui en vigueur a la date de
+  // souscription initiale, quel que soit le nombre d'attestations
+  // provisoires deja emises.
+  const rate = getRateForDate(originalQuoteDate);
   return Math.round(basePremium * rate * 100) / 100;
 }
 

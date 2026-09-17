@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1789680582982" clover="3.2.0">
+  <project timestamp="1789680582982" name="All files">
+    <metrics statements="14" coveredstatements="13" conditionals="2" coveredconditionals="1" methods="4" coveredmethods="4" elements="20" coveredelements="18" complexity="0" loc="14" ncloc="14" packages="1" files="2" classes="2"/>
+    <file name="premiumService.js" path="/home/runner/work/mini-attestation-poc/mini-attestation-poc/src/premiumService.js">
+      <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="1" count="1" type="stmt"/>
+      <line num="18" count="3" type="stmt"/>
+      <line num="23" count="3" type="stmt"/>
+      <line num="24" count="3" type="stmt"/>
+      <line num="27" count="1" type="stmt"/>
+    </file>
+    <file name="rateTable.js" path="/home/runner/work/mini-attestation-poc/mini-attestation-poc/src/rateTable.js">
+      <metrics statements="9" coveredstatements="8" conditionals="2" coveredconditionals="1" methods="3" coveredmethods="3"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="9" count="3" type="stmt"/>
+      <line num="10" count="3" type="stmt"/>
+      <line num="11" count="6" type="stmt"/>
+      <line num="12" count="1" type="stmt"/>
+      <line num="14" count="3" type="cond" truecount="1" falsecount="1"/>
+      <line num="15" count="0" type="stmt"/>
+      <line num="17" count="3" type="stmt"/>
+      <line num="20" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>
